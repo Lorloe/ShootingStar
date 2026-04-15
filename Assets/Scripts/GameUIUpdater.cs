@@ -14,7 +14,7 @@ public class GameUIUpdater : MonoBehaviour
 
     void Start()
     {
-        scoreKeeper = FindObjectOfType<ScoreKeeper>();
+        scoreKeeper = ScoreKeeper.Instance;
         healthSlider.maxValue = playerHealth.GetHealth();
     }
 

@@ -14,6 +14,7 @@ public class Health : MonoBehaviour
     private AudioManager audioManager;
     private ScoreKeeper scoreKeeper;
     private LevelManager levelManager;
+    private bool isDestroyed;
 
     public int GetHealth()
     {
@@ -23,35 +24,56 @@ public class Health : MonoBehaviour
 
     void Start()
     {
-        cameraShake = Camera.main.GetComponent<CameraShake>();
-        audioManager = FindObjectOfType<AudioManager>();
-        scoreKeeper = FindObjectOfType<ScoreKeeper>();
-        levelManager = FindObjectOfType<LevelManager>();
+        Camera mainCamera = Camera.main;
+        if (mainCamera != null)
+        {
+            cameraShake = mainCamera.GetComponent<CameraShake>();
+        }
+
+        audioManager = AudioManager.Instance;
+        scoreKeeper = ScoreKeeper.Instance;
+
+        if (levelManager == null)
+        {
+            levelManager = FindFirstObjectByType<LevelManager>();
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
+        if (isDestroyed)
+        {
+            return;
+        }
+
+        if (HandleShipCollision(other.gameObject))
+        {
+            return;
+        }
+
         // Check if hit a damage dealer
 
         DamageDealer damageDealer = other.GetComponent<DamageDealer>();
         if (damageDealer != null)
         {
-            TakeDamage(damageDealer.GetDamage());   // Reduce health
+            TakeDamage(damageDealer.GetDamage());
             damageDealer.Hit();
-
-            HitParticleEffect();    // Show hit particle effect
-            
-            if (applyCameraShake)
-            {
-                cameraShake.Play(); // Apply camera shake if enabled
-            }
-
-            audioManager.PlayDamageExplosionSFX();   // Play damage explosion sound
+            PlayHitFeedback();
         }
     }
 
-    private void TakeDamage(int damage)
+    private void OnCollisionEnter2D(Collision2D other)
     {
+        HandleShipCollision(other.gameObject);
+    }
+
+    public void TakeDamage(int damage)
+    {
+        if (isDestroyed)
+        {
+            return;
+        }
+
         healthPoints -= damage;
         if (healthPoints <= 0)
         {
@@ -61,16 +83,64 @@ public class Health : MonoBehaviour
 
     private void Destroyed()
     {
+        if (isDestroyed)
+        {
+            return;
+        }
+
+        isDestroyed = true;
+
         if (isPlayer)
         {
-            levelManager.LoadGameOverScene();
+            if (levelManager != null)
+            {
+                levelManager.LoadGameOverScene();
+            }
+            else
+            {
+                Debug.LogError("LevelManager not found when trying to load GameOverScene.");
+            }
         }
-        else if (!isPlayer)
+        else if (!isPlayer && scoreKeeper != null)
         {
             scoreKeeper.AddScore(scoreValue); // Add score for destroying an enemy
         }
+
         Destroy(gameObject);
-        // Debug.Log("Object destroyed");
+    }
+
+    private bool HandleShipCollision(GameObject otherObject)
+    {
+        if (isDestroyed || !isPlayer || !otherObject.CompareTag("Enemy"))
+        {
+            return false;
+        }
+
+        Health otherHealth = otherObject.GetComponent<Health>();
+        if (otherHealth == null)
+        {
+            return false;
+        }
+
+        otherHealth.TakeDamage(otherHealth.GetHealth());
+        PlayHitFeedback();
+        TakeDamage(healthPoints);
+        return true;
+    }
+
+    private void PlayHitFeedback()
+    {
+        HitParticleEffect();
+
+        if (applyCameraShake && cameraShake != null)
+        {
+            cameraShake.Play();
+        }
+
+        if (audioManager != null)
+        {
+            audioManager.PlayDamageExplosionSFX();
+        }
     }
 
     private void HitParticleEffect()
