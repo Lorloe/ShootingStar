@@ -223,7 +223,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Health
   healthPoints: 100
   hitParticleEffect: {fileID: 4729279153169464149, guid: 65a956ad6065a1247bc0caa5a621f0b8, type: 3}
-  isPlayer: 0
+  isPlayer: 1
   scoreValue: 10
   applyCameraShake: 1
 --- !u!114 &-4667265212436227375
@@ -239,6 +239,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DamageDealer
   damage: 10
+  destroyOnHit: 0
 --- !u!114 &2066929949413743171
 MonoBehaviour:
   m_ObjectHideFlags: 0

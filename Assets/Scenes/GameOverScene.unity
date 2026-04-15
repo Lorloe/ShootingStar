@@ -202,7 +202,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 881264592}
+      - m_Target: {fileID: 844272841}
         m_TargetAssemblyTypeName: LevelManager, Assembly-CSharp
         m_MethodName: LoadGameScene
         m_Mode: 1
@@ -609,7 +609,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 881264592}
+      - m_Target: {fileID: 844272841}
         m_TargetAssemblyTypeName: LevelManager, Assembly-CSharp
         m_MethodName: LoadMenuScene
         m_Mode: 1
@@ -976,7 +976,7 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
---- !u!1001 &881264591
+--- !u!1001 &844272840
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -984,10 +984,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 643052837363425907, guid: 05d2aa8a1a60dc249bc17f9a72392f06, type: 3}
-      propertyPath: delayBeforeLoading
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 6812270792551317062, guid: 05d2aa8a1a60dc249bc17f9a72392f06, type: 3}
       propertyPath: m_Name
       value: LevelManager
@@ -1037,10 +1033,10 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 05d2aa8a1a60dc249bc17f9a72392f06, type: 3}
---- !u!114 &881264592 stripped
+--- !u!114 &844272841 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 643052837363425907, guid: 05d2aa8a1a60dc249bc17f9a72392f06, type: 3}
-  m_PrefabInstance: {fileID: 881264591}
+  m_PrefabInstance: {fileID: 844272840}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
@@ -1801,6 +1797,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameOverUI
   scoreText: {fileID: 485261825}
+  highScoreText: {fileID: 585449871}
 --- !u!1 &1973376137
 GameObject:
   m_ObjectHideFlags: 0
@@ -1947,4 +1944,4 @@ SceneRoots:
   - {fileID: 749071053}
   - {fileID: 1581204151}
   - {fileID: 897923383}
-  - {fileID: 881264591}
+  - {fileID: 844272840}

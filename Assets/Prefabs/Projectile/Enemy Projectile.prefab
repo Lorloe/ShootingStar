@@ -112,6 +112,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DamageDealer
   damage: 10
+  destroyOnHit: 1
 --- !u!1 &5922994534680299448
 GameObject:
   m_ObjectHideFlags: 0
