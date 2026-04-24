@@ -9,9 +9,9 @@ public class PathFinding : MonoBehaviour
 
     void Start()
     {
-        enemySpawner = FindObjectOfType<EnemySpawner>();
+        enemySpawner = FindFirstObjectByType<EnemySpawner>();
         waveConfig = enemySpawner.GetWaveConfig();
-        waypoints = waveConfig.GetWavepoints();
+        waypoints = waveConfig.GetWaypoints();
         transform.position = waveConfig.GetStartingWaypoint().position;
     }
 

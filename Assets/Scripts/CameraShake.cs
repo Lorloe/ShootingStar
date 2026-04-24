@@ -7,6 +7,7 @@ public class CameraShake : MonoBehaviour
     [SerializeField] private float shakeMagnitude = 0.2f;
 
     private Vector3 initialPosition;
+    private Coroutine shakeCoroutine;
 
     void Start()
     {
@@ -15,7 +16,24 @@ public class CameraShake : MonoBehaviour
 
     public void Play()
     {
-        StartCoroutine(ShakeCoroutine());
+        if (shakeCoroutine != null)
+        {
+            StopCoroutine(shakeCoroutine);
+            transform.localPosition = initialPosition;
+        }
+
+        shakeCoroutine = StartCoroutine(ShakeCoroutine());
+    }
+
+    private void OnDisable()
+    {
+        if (shakeCoroutine != null)
+        {
+            StopCoroutine(shakeCoroutine);
+            shakeCoroutine = null;
+        }
+
+        transform.localPosition = initialPosition;
     }
 
     private IEnumerator ShakeCoroutine()
@@ -27,6 +45,8 @@ public class CameraShake : MonoBehaviour
             timeElapsed += Time.deltaTime;
             yield return new WaitForEndOfFrame();
         }
+
         transform.localPosition = initialPosition;
+        shakeCoroutine = null;
     }
 }

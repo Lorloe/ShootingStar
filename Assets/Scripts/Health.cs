@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class Health : MonoBehaviour
@@ -15,10 +16,23 @@ public class Health : MonoBehaviour
     private ScoreKeeper scoreKeeper;
     private LevelManager levelManager;
     private bool isDestroyed;
+    private int maxHealth;
+
+    public event Action<int> HealthChanged;
+
+    void Awake()
+    {
+        maxHealth = healthPoints;
+    }
 
     public int GetHealth()
     {
         return healthPoints;
+    }
+
+    public int GetMaxHealth()
+    {
+        return maxHealth > 0 ? maxHealth : healthPoints;
     }
 
 
@@ -74,7 +88,20 @@ public class Health : MonoBehaviour
             return;
         }
 
-        healthPoints -= damage;
+        int updatedHealth = Mathf.Clamp(healthPoints - damage, 0, GetMaxHealth());
+        if (updatedHealth == healthPoints)
+        {
+            return;
+        }
+
+        healthPoints = updatedHealth;
+        // HealthChanged?.Invoke(healthPoints);
+
+        if (HealthChanged != null)
+        {
+            HealthChanged.Invoke(healthPoints);
+        }
+
         if (healthPoints <= 0)
         {
             Destroyed();

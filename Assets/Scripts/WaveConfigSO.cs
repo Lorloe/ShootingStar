@@ -21,18 +21,18 @@ public class WaveConfigSO : ScriptableObject
         return enemyMoveSpeed;
     }
 
-    public Transform[] GetWavepoints()
+    public Transform[] GetWaypoints()
     {
-        Transform[] wavepoints = new Transform[pathPrefab.childCount];
+        Transform[] waypoints = new Transform[pathPrefab.childCount];
         
-        // wavepoints[0] = pathPrefab.GetChild(0);
-        // wavepoints[1] = pathPrefab.GetChild(1);
+        // waypoints[0] = pathPrefab.GetChild(0);
+        // waypoints[1] = pathPrefab.GetChild(1);
 
         for (int i = 0; i < pathPrefab.childCount; i++)
         {
-            wavepoints[i] = pathPrefab.GetChild(i);
+            waypoints[i] = pathPrefab.GetChild(i);
         }
-        return wavepoints;
+        return waypoints;
     }
 
     public int GetEnemyCount()

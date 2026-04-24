@@ -12,15 +12,75 @@ public class GameUIUpdater : MonoBehaviour
     [SerializeField] private TextMeshProUGUI scoreText;
     private ScoreKeeper scoreKeeper;
 
-    void Start()
+    void OnEnable()
     {
         scoreKeeper = ScoreKeeper.Instance;
-        healthSlider.maxValue = playerHealth.GetHealth();
+        SubscribeToEvents();
+        SyncUI();
     }
 
-    void Update()
+    void OnDisable()
     {
-        healthSlider.value = playerHealth.GetHealth();
-        scoreText.text = scoreKeeper.GetScore().ToString("D9"); // Display score with leading zeros
+        UnsubscribeFromEvents();
+    }
+
+    private void SubscribeToEvents()
+    {
+        if (playerHealth != null)
+        {
+            playerHealth.HealthChanged += RefreshHealthUI;
+        }
+
+        if (scoreKeeper != null)
+        {
+            scoreKeeper.ScoreChanged += RefreshScoreUI;
+        }
+    }
+
+    private void UnsubscribeFromEvents()
+    {
+        if (playerHealth != null)
+        {
+            playerHealth.HealthChanged -= RefreshHealthUI;
+        }
+
+        if (scoreKeeper != null)
+        {
+            scoreKeeper.ScoreChanged -= RefreshScoreUI;
+        }
+    }
+
+    private void SyncUI()
+    {
+        if (playerHealth != null && healthSlider != null)
+        {
+            healthSlider.maxValue = playerHealth.GetMaxHealth();
+            RefreshHealthUI(playerHealth.GetHealth());
+        }
+
+        if (scoreKeeper != null)
+        {
+            RefreshScoreUI(scoreKeeper.GetScore());
+        }
+    }
+
+    private void RefreshHealthUI(int currentHealth)
+    {
+        if (healthSlider == null)
+        {
+            return;
+        }
+
+        healthSlider.value = currentHealth;
+    }
+
+    private void RefreshScoreUI(int currentScore)
+    {
+        if (scoreText == null)
+        {
+            return;
+        }
+
+        scoreText.text = currentScore.ToString("D9");
     }
 }
